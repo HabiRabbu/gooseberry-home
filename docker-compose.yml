@@ -2,11 +2,10 @@ version: '3.8'
 
 services:
   frontend:
-    build: ./frontend
-    ports:
+    build: ./frontend/gooseberry-home-frontend
       - "3000:80"
     volumes:
-      - /srv/dev-disk-by-uuid-bafd8995-3fbf-427d-b4a2-8bf9a1fdb866/gooseberry-home/frontend:/app
+      - ./frontend/gooseberry-home-frontend:/app
     networks:
       - gooseberry-home-network
 
@@ -15,7 +14,7 @@ services:
     ports:
       - "3001:8080"
     volumes:
-      - /srv/dev-disk-by-uuid-bafd8995-3fbf-427d-b4a2-8bf9a1fdb866/gooseberry-home/backend:/app
+      - ./backend:/app
     networks:
       - gooseberry-home-network
 
