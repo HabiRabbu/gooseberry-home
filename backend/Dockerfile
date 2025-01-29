@@ -1,13 +1,18 @@
-# Build stage
 FROM golang:1.21-alpine AS build
 WORKDIR /app
-COPY go.mod ./
-RUN go mod init my-portal
-COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /my-portal
 
-# Run stage
+COPY go.mod go.sum ./
+RUN go mod tidy
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o server
+
 FROM alpine:latest
-COPY --from=build /my-portal /my-portal
+WORKDIR /app  # Keep everything inside /app for organization
+
+COPY --from=build /app/server /app/server
+
 EXPOSE 8080
-CMD ["/my-portal"]
+
+CMD ["/app/server"]
